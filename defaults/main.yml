@@ -9,5 +9,5 @@ network:
   - 8.8.8.8
 
 hostname:
-  set: true
+  set: false
   value: "test.plrr.net"

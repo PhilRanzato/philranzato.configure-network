@@ -1,0 +1,36 @@
+---
+- name: "Store previous ip"
+  set_fact:
+    old_ip4: "{{ ansible_default_ipv4.address }}"
+
+- name: "Add the new host in the inventory"
+  add_host:
+    name: "{{ hostname.value | default(inventory_hostname) }}"
+    groups: updated_hosts
+    ansible_host: "{{ network.ip4 }}"
+
+- name: "Reboot to enforce changes"
+  reboot:
+    reboot_timeout: 0
+  ignore_errors: true
+
+- name: "Replace the line in /etc/hosts for the ansible master"
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^{{ old_ip4 | regex_replace('.', '\\.') }}"
+    line: "{{ network.ip4 }} {{ hostname.value | default(inventory_hostname) }}"
+    owner: root
+    group: root
+    mode: '0644'
+  delegate_to: localhost
+
+- name: "Wait for the new host to startup"
+  wait_for:
+    host: "{{ hostname.value | default(inventory_hostname) }}"
+    port: 22
+  delegate_to: localhost
+
+- name: "debug"
+  debug:
+    msg: "{{ ansible_nodename }}"
+  delegate_to: "{{ hostname.value | default(inventory_hostname) }}"
