@@ -1,3 +1,13 @@
 ---
 - name: "Preflight Checks"
   include_tasks: 00-preflight-checks.yml
+
+- name: "Install Dependencies"
+  include_tasks: 01-dependencies.yml
+
+- name: "Set Static IP"
+  include_tasks: 02-set-static-ip.yml
+
+- name: "Set hostname"
+  include_tasks: 03-set-hostname.yml
+  when: hostname.set

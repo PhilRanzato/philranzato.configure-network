@@ -7,3 +7,7 @@ network:
   dns4:
   - 172.16.15.2
   - 8.8.8.8
+
+hostname:
+  set: true
+  value: "test.plrr.net"
