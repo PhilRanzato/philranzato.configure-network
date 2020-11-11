@@ -1,0 +1,14 @@
+---
+- name: "Configure static IP for network {{ network.conn_name }}"
+  nmcli:
+    type: ethernet
+    conn_name: "{{ network.conn_name }}"
+    ifname: "{{ network.ifname }}"
+    ip4: "{{ network.ip4 }}/24"
+    gw4: "{{ network.gw4 }}"
+    dns4: "{{ network.dns4 }}"
+    autoconnect: yes
+    state: present
+
+- name: "Set to manual"
+  shell: "nmcli con mod {{ network.conn_name }} ipv4.method manual"

@@ -1,2 +1,9 @@
 ---
-# defaults file for philranzato.ansible-role
+network:
+  conn_name: ens33-test
+  ifname: ens33
+  ip4: 172.16.15.193
+  gw4: 172.16.15.2
+  dns4:
+  - 172.16.15.2
+  - 8.8.8.8

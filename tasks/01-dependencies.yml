@@ -1,0 +1,10 @@
+---
+- name: "Ensure nmcli module dependencies are present"
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - NetworkManager-glib
+    - nm-connection-editor
+    - libsemanage-python
+    - policycoreutils-python

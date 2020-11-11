@@ -1,7 +1,9 @@
-philranzato.ansible-role
+philranzato.configure-network
 =========
 
-A brief description of the role goes here.
+Configure network for a VM:
+- Assign a static IP
+- Change hostname
 
 Requirements
 ------------
@@ -12,6 +14,14 @@ Role Variables
 --------------
 
 ```yaml
+network:
+  conn_name: ens33-test
+  ifname: ens33
+  ip4: 172.16.15.193
+  gw4: 172.16.15.2
+  dns4:
+  - 172.16.15.2
+  - 8.8.8.8
 ```
 
 Dependencies
@@ -22,13 +32,11 @@ None.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
 ```yaml
-- name: "Play"
+- name: "Configure Network"
   hosts: servers
   roles:
-  - role: philranzato.ansible-role
+  - role: philranzato.configure-network
 ```
 
 License
