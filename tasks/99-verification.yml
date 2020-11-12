@@ -11,7 +11,5 @@
 
 - name: "Print instructions to ssh into new host"
   debug:
-    msg: >
-      You can now SSH into {{ ansible_nodename }} with:
-      ssh {{ ansible_nodename }}
+    msg: "You can now SSH into {{ ansible_nodename }} with: ssh {{ ansible_nodename }}"
   delegate_to: "{{ hostname.value | default(inventory_hostname) }}"
