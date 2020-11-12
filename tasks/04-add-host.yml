@@ -1,0 +1,55 @@
+---
+- name: "Store previous ip"
+  set_fact:
+    old_ip4: "{{ ansible_default_ipv4.address }}"
+
+- name: "Add the new host in the inventory"
+  add_host:
+    name: "{{ hostname.value | default(inventory_hostname) }}"
+    groups: updated_hosts
+    ansible_host: "{{ network.ip4 }}"
+
+- name: "Get host key"
+  slurp:
+    path: "/etc/ssh/ssh_host_ecdsa_key.pub"
+  register: known_hosts
+
+- name: "Get the current public key from the known host file"
+  set_fact:
+    known_hosts_key: "{{ known_hosts['content'] | b64decode }}"
+  delegate_to: localhost
+
+- name: "Reboot to enforce changes"
+  reboot:
+    reboot_timeout: 0
+  ignore_errors: true
+
+- name: "Replace the line in /etc/hosts for the ansible master"
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^{{ old_ip4 | regex_replace('.', '\\.') }}"
+    line: "{{ network.ip4 }} {{ hostname.value | default(inventory_hostname) }}"
+    owner: root
+    group: root
+    mode: '0644'
+  delegate_to: localhost
+
+- name: "Wait for the new host to startup"
+  wait_for:
+    host: "{{ hostname.value | default(inventory_hostname) }}"
+    port: 22
+  delegate_to: localhost
+
+- name: "Add the new host in the known hosts"
+  known_hosts:
+    name: "{{ hostname.value | default(inventory_hostname) }}"
+    key: "{{ hostname.value | default(inventory_hostname) }},{{ network.ip4 }} {{ known_hosts_key }}"
+    state: present
+  delegate_to: localhost
+
+- name: "Remove the old host in the known hosts"
+  known_hosts:
+    name: "{{ inventory_hostname }}"
+    key: "{{ inventory_hostname }},{{ old_ip4 }} {{ known_hosts_key }}"
+    state: absent
+  delegate_to: localhost

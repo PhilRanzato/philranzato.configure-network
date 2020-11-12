@@ -11,3 +11,9 @@
 - name: "Set hostname"
   include_tasks: 03-set-hostname.yml
   when: hostname.set
+
+- name: "Add the new host to the inventory"
+  include_tasks: 04-add-host.yml
+
+- name: "Consistency Checks"
+  include_tasks: 99-verification.yml

@@ -1,8 +1,4 @@
 ---
-- name: "Set the hostname for {{ inventory_hostname }}"
+- name: "Set the new hostname ({{ hostname.value }}) for {{ inventory_hostname }}"
   hostname:
     name: "{{ hostname.value }}"
-
-- name: "Reboot to enforce changes"
-  reboot:
-    reboot_timeout: 0
