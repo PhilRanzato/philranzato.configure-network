@@ -9,6 +9,16 @@
     groups: updated_hosts
     ansible_host: "{{ network.ip4 }}"
 
+- name: "Get host key"
+  slurp:
+    path: "/etc/ssh/ssh_host_ecdsa_key.pub"
+  register: known_hosts
+
+- name: "Get the current public key from the known host file"
+  set_fact:
+    known_hosts_key: "{{ known_hosts['content'] | b64decode }}"
+  delegate_to: localhost
+
 - name: "Reboot to enforce changes"
   reboot:
     reboot_timeout: 0
@@ -30,7 +40,21 @@
     port: 22
   delegate_to: localhost
 
-- name: "debug"
+- name: "Print the current hostname"
   debug:
-    msg: "{{ ansible_nodename }}"
+    msg: "The new hostname is {{ ansible_nodename }}"
   delegate_to: "{{ hostname.value | default(inventory_hostname) }}"
+
+- name: "Add the new host in the known hosts"
+  known_hosts:
+    name: "{{ hostname.value | default(inventory_hostname) }}"
+    key: "{{ hostname.value | default(inventory_hostname) }},{{ network.ip4 }} {{ known_hosts_key }}"
+    state: present
+  delegate_to: localhost
+
+- name: "Remove the old host in the known hosts"
+  known_hosts:
+    name: "{{ inventory_hostname }}"
+    key: "{{ inventory_hostname }},{{ old_ip4 }} {{ known_hosts_key }}"
+    state: absent
+  delegate_to: localhost
