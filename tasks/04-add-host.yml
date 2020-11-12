@@ -40,11 +40,6 @@
     port: 22
   delegate_to: localhost
 
-- name: "Print the current hostname"
-  debug:
-    msg: "The new hostname is {{ ansible_nodename }}"
-  delegate_to: "{{ hostname.value | default(inventory_hostname) }}"
-
 - name: "Add the new host in the known hosts"
   known_hosts:
     name: "{{ hostname.value | default(inventory_hostname) }}"

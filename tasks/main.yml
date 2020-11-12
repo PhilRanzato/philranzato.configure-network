@@ -14,3 +14,6 @@
 
 - name: "Add the new host to the inventory"
   include_tasks: 04-add-host.yml
+
+- name: "Consistency Checks"
+  include_tasks: 99-verification.yml
