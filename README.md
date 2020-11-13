@@ -1,9 +1,10 @@
 philranzato.configure-network
 =========
 
-Configure network for a VM:
-- Assign a static IP
-- Change hostname
+Configures network for a VM:
+- Assigns a static IP
+- Changes hostname
+- Add the new host to the ansible master and remove the old reference
 
 Requirements
 ------------
@@ -15,8 +16,7 @@ Role Variables
 
 ```yaml
 network:
-  conn_name: ens33-test
-  ifname: ens33
+  conn_name: ens33
   ip4: 172.16.15.193
   gw4: 172.16.15.2
   dns4:

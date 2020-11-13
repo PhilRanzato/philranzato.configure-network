@@ -1,7 +1,6 @@
 ---
 network:
-  conn_name: ens33-test
-  ifname: ens33
+  conn_name: ens33
   ip4: 172.16.15.193
   gw4: 172.16.15.2
   dns4:
