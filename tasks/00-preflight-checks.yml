@@ -1,4 +1,5 @@
 ---
 - name: "Make sure the network interface exists on the host"
-  debug: 
-    msg: "TODO"
+  fail: 
+    msg: "The specified network (network.conn_name: {{ network.conn_name }}) does not exist"
+  when: not network.conn_name in ansible_interfaces

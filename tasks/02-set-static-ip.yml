@@ -3,7 +3,7 @@
   nmcli:
     type: ethernet
     conn_name: "{{ network.conn_name }}"
-    ifname: "{{ network.ifname }}"
+    ifname: "{{ network.ifname | default(network.conn_name) }}"
     ip4: "{{ network.ip4 }}/24"
     gw4: "{{ network.gw4 }}"
     dns4: "{{ network.dns4 }}"
