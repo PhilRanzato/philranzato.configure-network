@@ -13,3 +13,4 @@
 
 - name: "Set to manual"
   shell: "nmcli con mod {{ network.conn_name }} ipv4.method manual"
+  become: true
