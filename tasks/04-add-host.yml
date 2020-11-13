@@ -13,6 +13,7 @@
   slurp:
     path: "/etc/ssh/ssh_host_ecdsa_key.pub"
   register: known_hosts
+  become: true
 
 - name: "Get the current public key from the known host file"
   set_fact:
@@ -23,6 +24,7 @@
   reboot:
     reboot_timeout: 0
   ignore_errors: true
+  become: true
 
 - name: "Replace the line in /etc/hosts for the ansible master"
   lineinfile:
