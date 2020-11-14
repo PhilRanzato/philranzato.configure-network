@@ -34,7 +34,7 @@ Example Playbook
 
 ```yaml
 - name: "Configure Network"
-  hosts: servers
+  hosts: server
   roles:
   - role: philranzato.configure-network
 ```

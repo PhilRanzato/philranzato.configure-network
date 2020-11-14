@@ -1,9 +1,8 @@
 galaxy_info:
   author: Phil Ranzato
   description: Configure network (assign static ip, change hostname)
-  company: KiratechCH
   issue_tracker_url: https://github.com/PhilRanzato/philranzato.configure-network/issues
-  license: MIT
+  license: MIT License
   min_ansible_version: 2.3
   platforms:
   - name: Centos
