@@ -8,3 +8,4 @@
     - nm-connection-editor
     - libsemanage-python
     - policycoreutils-python
+  become: true
