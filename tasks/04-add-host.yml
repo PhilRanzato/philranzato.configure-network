@@ -23,8 +23,7 @@
 - name: "Reboot to enforce changes"
   reboot:
     reboot_timeout: 0
-  register: reboot
-  failed_when: not reboot.rebooted
+  ignore_errors: true
   become: true
 
 - name: "Replace the line in /etc/hosts for the ansible master"
